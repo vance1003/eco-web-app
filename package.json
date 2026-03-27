@@ -1,0 +1,9 @@
+{
+  "name": "eco-web-app",
+  "version": "1.0.0",
+  "description": "绿智未来生态环保 - 网页版",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Static site - no build needed'"
+  }
+}

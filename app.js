@@ -393,7 +393,9 @@ class EcoApp {
   async callAI(message) {
     // 使用阿里云函数计算（集成火山方舟AI）
     try {
-      const functionUrl = 'https://eco-qa-function-myledsbgak-cn-hangzhou.fcapp.run/eco-qa';
+      const functionUrl = 'https://eco-qa-function-myledsbgak.cn-hangzhou.fcapp.run/eco-qa';
+      console.log('调用云函数:', functionUrl);
+      
       const response = await fetch(functionUrl, {
         method: 'POST',
         headers: {
@@ -402,15 +404,19 @@ class EcoApp {
         body: JSON.stringify({ question: message })
       });
       
+      console.log('云函数响应状态:', response.status);
+      
       if (response.ok) {
         const data = await response.json();
+        console.log('云函数响应数据:', data);
         return data.answer;
       }
     } catch (e) {
-      console.log('阿里云函数调用失败，使用本地规则');
+      console.error('阿里云函数调用失败:', e);
     }
 
     // 本地规则回复（备用）
+    console.log('使用本地规则回复');
     return this.getLocalResponse(message);
   }
 

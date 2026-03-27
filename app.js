@@ -273,7 +273,7 @@ class EcoApp {
           <div class="doubao-avatar">🤖</div>
           <div class="doubao-info">
             <h3>环保智能体</h3>
-            <p>Powered by 豆包 AI</p>
+            <p>Powered by 智谱清言</p>
           </div>
         </div>
         <div class="doubao-content">
@@ -300,11 +300,11 @@ class EcoApp {
             </div>
           </div>
           <div class="doubao-action">
-            <a href="https://doubao.com/bot/HSyQeQC7" target="_blank" class="btn-doubao">
+            <a href="https://chatglm.cn" target="_blank" class="btn-doubao">
               <span class="btn-icon">💬</span>
               <span>开始咨询</span>
             </a>
-            <p class="privacy-tip">💡 对话内容仅你可见，请放心咨询</p>
+            <p class="privacy-tip">💡 无需登录，打开即用</p>
           </div>
         </div>
       </div>

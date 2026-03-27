@@ -393,8 +393,8 @@ class EcoApp {
   async callAI(message) {
     // 使用阿里云函数计算（集成火山方舟AI）
     try {
-      // 使用正确的公网访问地址
-      const functionUrl = 'https://eco-qa-function-myledsbagk.cn-hangzhou.fcapp.run/eco-qa';
+      // 修正URL，直接调用根路径
+      const functionUrl = 'https://eco-qa-function-myledsbagk.cn-hangzhou.fcapp.run';
       console.log('调用云函数:', functionUrl);
       
       const response = await fetch(functionUrl, {

@@ -1137,3 +1137,203 @@ body {
     display: block;
   }
 }
+
+/* ==================== 豆包智能体页面 ==================== */
+.doubao-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8f5e9 100%);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.doubao-header {
+  padding: 32px;
+  background: linear-gradient(135deg, #4CAF50, #66BB6A);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 4px 20px rgba(76, 175, 80, 0.3);
+}
+
+.doubao-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255,255,255,0.3);
+}
+
+.doubao-info h3 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.doubao-info p {
+  font-size: 14px;
+  opacity: 0.9;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.doubao-info p::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.doubao-content {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+
+.doubao-intro {
+  text-align: center;
+  max-width: 500px;
+}
+
+.doubao-intro h4 {
+  font-size: 22px;
+  color: #333;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.doubao-intro p {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.8;
+  margin-bottom: 32px;
+}
+
+.doubao-features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.feature-icon {
+  font-size: 24px;
+}
+
+.feature-item span:last-child {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.doubao-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn-doubao {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 48px;
+  background: linear-gradient(135deg, #4CAF50, #66BB6A);
+  color: white;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+  box-shadow: 0 4px 20px rgba(76, 175, 80, 0.4);
+  transition: all 0.3s ease;
+}
+
+.btn-doubao:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px rgba(76, 175, 80, 0.5);
+}
+
+.btn-icon {
+  font-size: 24px;
+}
+
+.privacy-tip {
+  font-size: 13px;
+  color: #888;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 豆包页面移动端适配 */
+@media (max-width: 768px) {
+  .doubao-header {
+    padding: 24px 20px;
+  }
+  
+  .doubao-avatar {
+    width: 56px;
+    height: 56px;
+    font-size: 28px;
+  }
+  
+  .doubao-info h3 {
+    font-size: 20px;
+  }
+  
+  .doubao-content {
+    padding: 24px 20px;
+  }
+  
+  .doubao-intro h4 {
+    font-size: 18px;
+  }
+  
+  .doubao-intro p {
+    font-size: 14px;
+  }
+  
+  .doubao-features {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .feature-item {
+    padding: 14px 16px;
+  }
+  
+  .btn-doubao {
+    padding: 16px 40px;
+    font-size: 16px;
+  }
+}

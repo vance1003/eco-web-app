@@ -268,35 +268,49 @@ class EcoApp {
     page.className = 'page-qa page active';
     
     page.innerHTML = `
-      <div class="chat-header">
-        <div class="chat-avatar">🤖</div>
-        <div class="chat-info">
-          <h3>环保智能体</h3>
-          <p>在线</p>
-        </div>
-      </div>
-      <div class="chat-area" id="chat-area">
-        <div class="welcome-message">
-          <h4>👋 你好！我是绿智未来环保智能体</h4>
-          <p>有任何环保问题都可以问我，我会尽力为你解答～</p>
-          <div class="welcome-tips">
-            <span class="tip-chip" data-question="什么是垃圾分类？">什么是垃圾分类？</span>
-            <span class="tip-chip" data-question="如何节约用水？">如何节约用水？</span>
-            <span class="tip-chip" data-question="塑料瓶属于什么垃圾？">塑料瓶属于什么垃圾？</span>
-            <span class="tip-chip" data-question="低碳生活有哪些方式？">低碳生活有哪些方式？</span>
+      <div class="doubao-container">
+        <div class="doubao-header">
+          <div class="doubao-avatar">🤖</div>
+          <div class="doubao-info">
+            <h3>环保智能体</h3>
+            <p>Powered by 豆包 AI</p>
           </div>
         </div>
-      </div>
-      <div class="input-area">
-        <div class="input-wrapper">
-          <input type="text" id="qa-input" placeholder="请输入你的环保问题..." maxlength="200">
+        <div class="doubao-content">
+          <div class="doubao-intro">
+            <h4>👋 你好！我是绿智未来环保智能体</h4>
+            <p>有任何环保问题都可以向我咨询，我会为你提供专业、准确的解答～</p>
+            <div class="doubao-features">
+              <div class="feature-item">
+                <span class="feature-icon">♻️</span>
+                <span>垃圾分类咨询</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">🌱</span>
+                <span>低碳生活建议</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">💧</span>
+                <span>节能减排方案</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">🌍</span>
+                <span>环保知识科普</span>
+              </div>
+            </div>
+          </div>
+          <div class="doubao-action">
+            <a href="https://doubao.com/bot/HSyQeQC7" target="_blank" class="btn-doubao">
+              <span class="btn-icon">💬</span>
+              <span>开始咨询</span>
+            </a>
+            <p class="privacy-tip">💡 对话内容仅你可见，请放心咨询</p>
+          </div>
         </div>
-        <button class="btn-send" id="send-btn">➤</button>
       </div>
     `;
     
     container.appendChild(page);
-    this.initQA();
   }
 
   initQA() {

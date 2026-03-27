@@ -998,6 +998,7 @@ body {
     transform: translateX(-100%);
     position: fixed;
     z-index: 1000;
+    display: block;
   }
   
   .sidebar.open {
@@ -1005,7 +1006,7 @@ body {
   }
   
   .main-wrapper {
-    margin-left: 0;
+    margin-left: 0 !important;
   }
   
   .top-header {

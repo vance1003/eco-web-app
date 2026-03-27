@@ -10,6 +10,19 @@ class EcoApp {
     this.setupRouting();
     this.setupMobileMenu();
     this.loadPage('home');
+    
+    // 强制检测设备宽度，确保在移动端隐藏侧边栏
+    this.checkDeviceWidth();
+    window.addEventListener('resize', () => this.checkDeviceWidth());
+  }
+  
+  // 检测设备宽度并强制隐藏侧边栏
+  checkDeviceWidth() {
+    const sidebar = document.querySelector('.sidebar');
+    if (window.innerWidth <= 768) {
+      sidebar.style.transform = 'translateX(-100%)';
+      sidebar.classList.remove('open');
+    }
   }
 
   // 设置路由

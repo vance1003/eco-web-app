@@ -268,49 +268,35 @@ class EcoApp {
     page.className = 'page-qa page active';
     
     page.innerHTML = `
-      <div class="doubao-container">
-        <div class="doubao-header">
-          <div class="doubao-avatar">🤖</div>
-          <div class="doubao-info">
-            <h3>环保智能体</h3>
-            <p>Powered by 智谱清言</p>
+      <div class="chat-header">
+        <div class="chat-avatar">🤖</div>
+        <div class="chat-info">
+          <h3>环保智能体</h3>
+          <p>在线</p>
+        </div>
+      </div>
+      <div class="chat-area" id="chat-area">
+        <div class="welcome-message">
+          <h4>👋 你好！我是绿智未来环保智能体</h4>
+          <p>有任何环保问题都可以问我，我会尽力为你解答～</p>
+          <div class="welcome-tips">
+            <span class="tip-chip" data-question="什么是垃圾分类？">什么是垃圾分类？</span>
+            <span class="tip-chip" data-question="如何节约用水？">如何节约用水？</span>
+            <span class="tip-chip" data-question="塑料瓶属于什么垃圾？">塑料瓶属于什么垃圾？</span>
+            <span class="tip-chip" data-question="低碳生活有哪些方式？">低碳生活有哪些方式？</span>
           </div>
         </div>
-        <div class="doubao-content">
-          <div class="doubao-intro">
-            <h4>👋 你好！我是绿智未来环保智能体</h4>
-            <p>有任何环保问题都可以向我咨询，我会为你提供专业、准确的解答～</p>
-            <div class="doubao-features">
-              <div class="feature-item">
-                <span class="feature-icon">♻️</span>
-                <span>垃圾分类咨询</span>
-              </div>
-              <div class="feature-item">
-                <span class="feature-icon">🌱</span>
-                <span>低碳生活建议</span>
-              </div>
-              <div class="feature-item">
-                <span class="feature-icon">💧</span>
-                <span>节能减排方案</span>
-              </div>
-              <div class="feature-item">
-                <span class="feature-icon">🌍</span>
-                <span>环保知识科普</span>
-              </div>
-            </div>
-          </div>
-          <div class="doubao-action">
-            <a href="https://chatglm.cn" target="_blank" class="btn-doubao">
-              <span class="btn-icon">💬</span>
-              <span>开始咨询</span>
-            </a>
-            <p class="privacy-tip">💡 无需登录，打开即用</p>
-          </div>
+      </div>
+      <div class="input-area">
+        <div class="input-wrapper">
+          <input type="text" id="qa-input" placeholder="请输入你的环保问题..." maxlength="200">
         </div>
+        <button class="btn-send" id="send-btn">➤</button>
       </div>
     `;
     
     container.appendChild(page);
+    this.initQA();
   }
 
   initQA() {
@@ -461,10 +447,97 @@ class EcoApp {
     }
     
     if (lowerMsg.includes('环保') || lowerMsg.includes('环境')) {
-      return `环保小知识🌍\n\n1. 地球是我们共同的家园，需要每个人的保护\n2. 减少碳排放，减缓全球变暖\n3. 保护生物多样性，维护生态平衡\n4. 节约资源，减少浪费\n5. 绿色出行，低碳生活\n\n让我们一起行动起来，创造更美好的环境！✨`;
+      return `环保小知识🌍
+
+🌍 环保重要性：
+  • 地球是我们共同的家园，需要每个人的保护
+  • 减少碳排放，减缓全球变暖
+  • 保护生物多样性，维护生态平衡
+  • 节约资源，减少浪费
+  • 绿色出行，低碳生活
+
+🎯 环保行动：
+  • 从日常小事做起，比如垃圾分类
+  • 节约资源，减少浪费
+  • 绿色出行，低碳生活
+  • 爱护花草树木
+
+🌟 环保目标：
+  • 实现碳达峰、碳中和
+  • 建设美丽中国
+  • 保护生态环境
+  • 促进可持续发展
+
+让我们一起行动起来，创造更美好的环境！✨`;
     }
     
-    return `你好！我是绿智未来环保智能体�\n\n我可以回答关于垃圾分类、低碳生活、节约用水等环保问题\n\n你可以问我：\n• 什么是垃圾分类？\n• 如何节约用水？\n• 低碳生活有哪些方式？\n• 塑料污染的危害？\n• 如何保护空气质量？\n\n有什么环保问题都可以告诉我哦！`;
+    // 新能源
+    if (lowerMsg.includes('新能源') || lowerMsg.includes('太阳能') || lowerMsg.includes('风能')) {
+      return `新能源知识⚡
+
+☀️ 太阳能：
+  • 清洁可再生的绿色能源
+  • 不产生温室气体排放
+  • 太阳能板可安装在家顶
+  • 适合阳光充足的地区
+
+💨 风能：
+  • 利用风力发电，零排放
+  • 风力发电场可建在海上
+  • 风能资源丰富，可持继利用
+
+🔋 其他新能源：
+  • 水能：利用水力发电
+  • 地热能：利用地下热能
+  • 生物质能：利用有机物发电
+
+🌍 环保意义：
+  • 减少对化石燃料的依赖
+  • 降低环境污染
+  • 促进能源结构转型
+
+让我们一起支持新能源发展！`;
+    }
+    
+    // 环保节日
+    if (lowerMsg.includes('节日') || lowerMsg.includes('地球日') || lowerMsg.includes('环境日')) {
+      return `环保节日日历🌍
+
+🌍 重要环保节日：
+  • 3月12日：植树节
+  • 4月22日：世界地球日
+  • 6月5日：世界环境日
+  • 6月8日：世界海洋日
+  • 9月16日：国际保护臭氧层日
+  • 9月22日：世界无车日
+
+🎯 节日行动：
+  • 每个节日都有特定主题
+  • 参加相关环保活动
+  • 在社交媒体分享环保知识
+  • 从小事做起，影响他人
+
+让我们一起在环保节日行动起来！`;
+    }
+    
+    return `你好！我是绿智未来环保智能体🌿
+
+我可以帮你解答这些环保问题：
+
+🗑️ 垃圾分类指南
+🌱 低碳生活建议  
+💧 节约用水方法
+🌊 塑料污染知识
+🌳 植树造林好处
+🌤️ 空气质量保护
+⚡ 节能减排方案
+♻️ 资源循环利用
+⚡ 新能源知识
+📅 环保节日提醒
+
+请直接输入你的问题，比如："塑料瓶怎么分类？" 或 "如何节约用电？"
+
+我会为你提供详细、实用的环保建议！✨`;
   }
 
   // ========== AR识别页面 ==========

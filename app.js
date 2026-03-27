@@ -596,26 +596,35 @@ class EcoApp {
     let cameraStream = null;
 
     // 请求摄像头权限
-    navigator.mediaDevices.getUserMedia({ 
-      video: { 
-        facingMode: 'environment',
-        width: { ideal: 1280 },
-        height: { ideal: 720 }
-      } 
-    })
-    .then(stream => {
-      cameraStream = stream;
-      video.srcObject = stream;
-    })
-    .catch(err => {
-      console.error('摄像头错误:', err);
-      wrapper.innerHTML = `
-        <div class="camera-error">
-          <h3>📷 无法访问摄像头</h3>
-          <p>请确保：<br>1. 使用HTTPS或localhost访问<br>2. 已授予摄像头权限<br>3. 设备有可用摄像头</p>
-        </div>
-      `;
-    });
+    const startCamera = () => {
+      navigator.mediaDevices.getUserMedia({ 
+        video: { 
+          facingMode: 'environment',
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        } 
+      })
+      .then(stream => {
+        cameraStream = stream;
+        video.srcObject = stream;
+        // 确保视频播放
+        video.play().catch(err => {
+          console.error('视频播放失败:', err);
+        });
+      })
+      .catch(err => {
+        console.error('摄像头错误:', err);
+        wrapper.innerHTML = `
+          <div class="camera-error">
+            <h3>📷 无法访问摄像头</h3>
+            <p>请确保：<br>1. 使用HTTPS或localhost访问<br>2. 已授予摄像头权限<br>3. 设备有可用摄像头</p>
+          </div>
+        `;
+      });
+    };
+
+    // 初始启动摄像头
+    startCamera();
 
     // 拍照识别
     shootBtn.addEventListener('click', () => {
@@ -624,14 +633,29 @@ class EcoApp {
 
     // 重新识别
     reBtn.addEventListener('click', () => {
+      // 重置结果
       document.getElementById('result-name').textContent = '--';
       document.getElementById('result-type').textContent = '--';
       document.getElementById('result-tip').textContent = '点击拍照按钮识别垃圾类型';
+      
+      // 显示拍照按钮，隐藏重新识别按钮
       reBtn.style.display = 'none';
       shootBtn.style.display = 'flex';
+      
       // 确保摄像头流仍然活跃
-      if (cameraStream && video.srcObject === null) {
+      if (!cameraStream) {
+        startCamera();
+      } else if (video.srcObject === null) {
         video.srcObject = cameraStream;
+        video.play().catch(err => {
+          console.error('视频播放失败:', err);
+          startCamera();
+        });
+      } else if (video.paused) {
+        video.play().catch(err => {
+          console.error('视频播放失败:', err);
+          startCamera();
+        });
       }
     });
   }
@@ -743,7 +767,7 @@ class EcoApp {
   async callGarbageRecognition(imageDataUrl) {
     try {
       // 阿里云函数URL
-      const functionUrl = 'https://garbageecognize-zeqdzqzqn.ln-hangzhou.fcapp.run';
+      const functionUrl = 'https://garbageecognize-zeqdzqzqn.cn-hangzhou.fcapp.run';
       const response = await fetch(functionUrl, {
         method: 'POST',
         headers: {

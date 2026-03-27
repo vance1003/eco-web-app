@@ -391,27 +391,23 @@ class EcoApp {
 
   // 调用AI接口
   async callAI(message) {
-    // 使用 Pollinations AI (免费，无需API Key)
+    // 使用阿里云函数计算
     try {
-      const response = await fetch('https://text.pollinations.ai/' + encodeURIComponent(
-        `你是亲切可爱的环保科普小助手🥰。请回答以下环保问题，语言活泼俏皮，可以用表情，分点说明，控制在350字以内：${message}`
-      ), {
-        method: 'GET'
+      const functionUrl = 'https://eco-qa-function-myledsbgak-cn-hangzhou.fcapp.run/eco-qa';
+      const response = await fetch(functionUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ question: message })
       });
       
       if (response.ok) {
-        let text = await response.text();
-        
-        // 过滤掉Pollinations API的弃用通知
-        if (text.includes('IMPORTANT NOTICE') && text.includes('Pollinations legacy text API')) {
-          // 如果包含通知，使用本地回复
-          return this.getLocalResponse(message);
-        }
-        
-        return text;
+        const data = await response.json();
+        return data.answer;
       }
     } catch (e) {
-      console.log('Pollinations API failed, using fallback');
+      console.log('阿里云函数调用失败，使用本地规则');
     }
 
     // 本地规则回复（备用）

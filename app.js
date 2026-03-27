@@ -391,7 +391,7 @@ class EcoApp {
 
   // 调用AI接口
   async callAI(message) {
-    // 使用阿里云函数计算
+    // 使用阿里云函数计算（集成火山方舟AI）
     try {
       const functionUrl = 'https://eco-qa-function-myledsbgak-cn-hangzhou.fcapp.run/eco-qa';
       const response = await fetch(functionUrl, {
@@ -714,28 +714,28 @@ class EcoApp {
     const hashValue = imageHash % 10;
     
     // 基于哈希值的分类逻辑
-    if (hashValue < 3) {
+    if (hashValue < 2) {
       // 可能是塑料类
       return { 
         name: '塑料瓶', 
         type: '可回收物', 
         tip: '清空液体后投入蓝色可回收物垃圾桶' 
       };
-    } else if (hashValue < 5) {
+    } else if (hashValue < 4) {
       // 可能是食物类
       return { 
         name: '苹果核', 
         type: '湿垃圾', 
         tip: '投入绿色湿垃圾/厨余垃圾桶' 
       };
-    } else if (hashValue < 7) {
+    } else if (hashValue < 6) {
       // 可能是电池类
       return { 
         name: '废电池', 
         type: '有害垃圾', 
         tip: '投入红色有害垃圾桶，注意防漏' 
       };
-    } else if (hashValue < 9) {
+    } else if (hashValue < 8) {
       // 可能是纸张类
       return { 
         name: '餐巾纸', 
@@ -766,14 +766,27 @@ class EcoApp {
   // 调用垃圾识别API
   async callGarbageRecognition(imageDataUrl) {
     try {
-      // 阿里云函数URL
-      const functionUrl = 'https://garbageecognize-zeqdzqzqn.cn-hangzhou.fcapp.run';
+      // 阿里云函数URL - 修正为正确的地址
+      const functionUrl = 'https://garbage-recognize-zeqdzqzqn.cn-hangzhou.fcapp.run';
+      
+      // 测试函数是否可访问
+      const testResponse = await fetch(functionUrl, {
+        method: 'GET',
+        timeout: 3000
+      });
+      
+      if (!testResponse.ok) {
+        throw new Error(`函数不可访问: ${testResponse.status}`);
+      }
+      
+      // 发送识别请求
       const response = await fetch(functionUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ image: imageDataUrl })
+        body: JSON.stringify({ image: imageDataUrl }),
+        timeout: 10000
       });
       
       if (!response.ok) {

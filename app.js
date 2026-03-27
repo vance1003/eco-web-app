@@ -633,6 +633,9 @@ class EcoApp {
     const reBtn = document.getElementById('re-btn');
     const resultContent = document.getElementById('result-content');
     
+    // 隐藏拍照按钮，避免重复点击
+    shootBtn.style.display = 'none';
+    
     // 设置canvas尺寸
     canvas.width = video.videoWidth || 640;
     canvas.height = video.videoHeight || 480;

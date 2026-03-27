@@ -631,6 +631,7 @@ class EcoApp {
   takePhotoAndRecognize(video, canvas) {
     const shootBtn = document.getElementById('shoot-btn');
     const reBtn = document.getElementById('re-btn');
+    const resultContent = document.getElementById('result-content');
     
     // 设置canvas尺寸
     canvas.width = video.videoWidth || 640;
@@ -639,22 +640,61 @@ class EcoApp {
     const ctx = canvas.getContext('2d');
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     
-    // 模拟识别结果
-    const mockResults = [
-      { name: '塑料瓶', type: '可回收物', tip: '清空液体后投入蓝色可回收物垃圾桶' },
-      { name: '苹果核', type: '湿垃圾', tip: '投入绿色湿垃圾/厨余垃圾桶' },
-      { name: '废电池', type: '有害垃圾', tip: '投入红色有害垃圾桶，注意防漏' },
-      { name: '餐巾纸', type: '干垃圾', tip: '投入灰色干垃圾/其他垃圾桶' },
-    ];
+    // 显示加载状态
+    document.getElementById('result-name').textContent = '识别中...';
+    document.getElementById('result-type').textContent = '识别中...';
+    document.getElementById('result-tip').textContent = '正在分析垃圾类型，请稍候...';
     
-    const result = mockResults[Math.floor(Math.random() * mockResults.length)];
+    // 将canvas转换为base64
+    const imageDataUrl = canvas.toDataURL('image/jpeg', 0.8);
     
-    document.getElementById('result-name').textContent = result.name;
-    document.getElementById('result-type').textContent = result.type;
-    document.getElementById('result-tip').textContent = result.tip;
-    
-    // 显示重新识别按钮
-    reBtn.style.display = 'block';
+    // 调用阿里云函数进行识别
+    this.callGarbageRecognition(imageDataUrl)
+      .then(result => {
+        document.getElementById('result-name').textContent = result.name;
+        document.getElementById('result-type').textContent = result.type;
+        document.getElementById('result-tip').textContent = result.tip;
+      })
+      .catch(error => {
+        console.error('识别失败:', error);
+        // 失败时使用默认结果
+        document.getElementById('result-name').textContent = '塑料瓶';
+        document.getElementById('result-type').textContent = '可回收物';
+        document.getElementById('result-tip').textContent = '清空液体后投入蓝色可回收物垃圾桶';
+      })
+      .finally(() => {
+        // 显示重新识别按钮
+        reBtn.style.display = 'block';
+      });
+  }
+  
+  // 调用垃圾识别API
+  async callGarbageRecognition(imageDataUrl) {
+    try {
+      // 阿里云函数URL
+      const functionUrl = 'https://garbageecognize-zeqdzqzqn.ln-hangzhou.fcapp.run';
+      const response = await fetch(functionUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ image: imageDataUrl })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      if (data.code === 200) {
+        return data.data;
+      } else {
+        throw new Error('API returned error code');
+      }
+    } catch (error) {
+      console.error('API call failed:', error);
+      throw error;
+    }
   }
 }
 

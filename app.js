@@ -400,7 +400,14 @@ class EcoApp {
       });
       
       if (response.ok) {
-        const text = await response.text();
+        let text = await response.text();
+        
+        // 过滤掉Pollinations API的弃用通知
+        if (text.includes('IMPORTANT NOTICE') && text.includes('Pollinations legacy text API')) {
+          // 如果包含通知，使用本地回复
+          return this.getLocalResponse(message);
+        }
+        
         return text;
       }
     } catch (e) {
@@ -427,7 +434,23 @@ class EcoApp {
       return `节水小妙招💧\n\n1. 洗菜水浇花，一水多用\n2. 洗澡打香皂时关水\n3. 及时修理漏水龙头\n4. 使用节水型器具\n5. 洗衣机满载再洗\n\n珍惜每一滴水，让生命之源长流🌊`;
     }
     
-    return `这是个很好的环保问题呢🌿\n\n环保其实就在我们身边：\n1. 从日常小事做起，比如垃圾分类\n2. 节约资源，减少浪费\n3. 绿色出行，低碳生活\n4. 爱护花草树木\n\n每个人都是地球的守护者，让我们一起行动吧💚\n\n你有其他具体的环保问题吗？我很乐意为你解答✨`;
+    if (lowerMsg.includes('塑料') || lowerMsg.includes('污染')) {
+      return `塑料污染小知识�\n\n1. 塑料需要数百年才能降解\n2. 每年有800万吨塑料进入海洋\n3. 减少使用一次性塑料制品\n4. 选择可降解替代品\n5. 正确回收塑料垃圾\n\n让我们一起减少塑料使用，保护海洋环境🐟`;
+    }
+    
+    if (lowerMsg.includes('植树') || lowerMsg.includes('绿化')) {
+      return `植树造林好处多🌳\n\n1. 吸收二氧化碳，释放氧气\n2. 保持水土，防止水土流失\n3. 提供栖息地，保护生物多样性\n4. 调节气候，降低温度\n5. 美化环境，提升生活质量\n\n让我们一起为地球增添绿色吧✨`;
+    }
+    
+    if (lowerMsg.includes('空气') || lowerMsg.includes('雾霾')) {
+      return `空气质量保护小贴士🌤️\n\n1. 减少私家车使用，多乘公共交通\n2. 不焚烧垃圾和秸秆\n3. 支持清洁能源，减少化石燃料使用\n4. 绿色出行，骑行或步行\n5. 室内使用空气净化器\n\n让我们一起守护蓝天，呼吸新鲜空气！🌬️`;
+    }
+    
+    if (lowerMsg.includes('环保') || lowerMsg.includes('环境')) {
+      return `环保小知识🌍\n\n1. 地球是我们共同的家园，需要每个人的保护\n2. 减少碳排放，减缓全球变暖\n3. 保护生物多样性，维护生态平衡\n4. 节约资源，减少浪费\n5. 绿色出行，低碳生活\n\n让我们一起行动起来，创造更美好的环境！✨`;
+    }
+    
+    return `你好！我是绿智未来环保智能体�\n\n我可以回答关于垃圾分类、低碳生活、节约用水等环保问题\n\n你可以问我：\n• 什么是垃圾分类？\n• 如何节约用水？\n• 低碳生活有哪些方式？\n• 塑料污染的危害？\n• 如何保护空气质量？\n\n有什么环保问题都可以告诉我哦！`;
   }
 
   // ========== AR识别页面 ==========

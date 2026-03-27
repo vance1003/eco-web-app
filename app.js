@@ -28,6 +28,7 @@ class EcoApp {
       // 同时绑定点击和触摸事件，确保在移动设备上正常工作
       item.addEventListener('click', (e) => {
         e.preventDefault();
+        e.stopPropagation();
         const page = item.dataset.page;
         this.switchTab(page);
       });
@@ -35,8 +36,15 @@ class EcoApp {
       // 处理触摸事件
       item.addEventListener('touchstart', (e) => {
         e.preventDefault();
+        e.stopPropagation();
         const page = item.dataset.page;
         this.switchTab(page);
+      });
+      
+      // 处理触摸结束事件
+      item.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
       });
     });
 
@@ -116,17 +124,20 @@ class EcoApp {
     const mainContent = document.getElementById('main-content');
     mainContent.innerHTML = '';
 
-    switch(pageName) {
-      case 'home':
-        this.renderHomePage(mainContent);
-        break;
-      case 'qa':
-        this.renderQAPage(mainContent);
-        break;
-      case 'ar':
-        this.renderARPage(mainContent);
-        break;
-    }
+    // 使用requestAnimationFrame优化页面渲染
+    requestAnimationFrame(() => {
+      switch(pageName) {
+        case 'home':
+          this.renderHomePage(mainContent);
+          break;
+        case 'qa':
+          this.renderQAPage(mainContent);
+          break;
+        case 'ar':
+          this.renderARPage(mainContent);
+          break;
+      }
+    });
   }
 
   // ========== 首页 ==========

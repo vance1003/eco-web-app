@@ -25,7 +25,15 @@ class EcoApp {
 
     // 移动端底部导航
     document.querySelectorAll('.tab-bar .tab-item').forEach(item => {
+      // 同时绑定点击和触摸事件，确保在移动设备上正常工作
       item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const page = item.dataset.page;
+        this.switchTab(page);
+      });
+      
+      // 处理触摸事件
+      item.addEventListener('touchstart', (e) => {
         e.preventDefault();
         const page = item.dataset.page;
         this.switchTab(page);
@@ -43,19 +51,33 @@ class EcoApp {
   setupMobileMenu() {
     const menuToggle = document.getElementById('menu-toggle');
     const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
     
     if (menuToggle) {
       menuToggle.addEventListener('click', () => {
         this.sidebarOpen = !this.sidebarOpen;
         sidebar.classList.toggle('open', this.sidebarOpen);
+        overlay.classList.toggle('show', this.sidebarOpen);
+      });
+    }
+
+    // 点击遮罩层关闭侧边栏
+    if (overlay) {
+      overlay.addEventListener('click', () => {
+        this.sidebarOpen = false;
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
       });
     }
 
     // 点击外部关闭侧边栏
     document.addEventListener('click', (e) => {
-      if (this.sidebarOpen && !sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+      if (this.sidebarOpen && !sidebar.contains(e.target) && !menuToggle.contains(e.target) && !overlay.contains(e.target)) {
         this.sidebarOpen = false;
         sidebar.classList.remove('open');
+        if (overlay) {
+          overlay.classList.remove('show');
+        }
       }
     });
   }
@@ -73,26 +95,17 @@ class EcoApp {
 
     // 更新移动端导航状态
     document.querySelectorAll('.tab-bar .tab-item').forEach(item => {
-      item.classList.remove('active');
-      const icon = item.querySelector('.tab-icon');
-      if (item.dataset.page === page) {
-        item.classList.add('active');
-        // 切换到激活图标
-        if (icon && !icon.src.includes('_active')) {
-          icon.src = icon.src.replace('.png', '_active.png');
-        }
-      } else {
-        // 切换到普通图标
-        if (icon && icon.src.includes('_active')) {
-          icon.src = icon.src.replace('_active.png', '.png');
-        }
-      }
+      item.classList.toggle('active', item.dataset.page === page);
     });
 
     // 关闭移动端侧边栏
     if (this.sidebarOpen) {
       this.sidebarOpen = false;
       document.getElementById('sidebar').classList.remove('open');
+      const overlay = document.getElementById('overlay');
+      if (overlay) {
+        overlay.classList.remove('show');
+      }
     }
 
     this.loadPage(page);
@@ -201,14 +214,16 @@ class EcoApp {
   // 加载视频列表
   loadVideos() {
     const videoList = [
-      { title: '垃圾分类小知识：如何正确分类生活垃圾', poster: 'images/video/cover1.png', duration: '03:25', views: '1.2万' },
-      { title: '低碳生活指南：从日常小事做起', poster: 'images/video/cover2.png', duration: '05:12', views: '8千' },
-      { title: '环保从我做起：节约用水用电技巧', poster: 'images/video/cover3.png', duration: '04:08', views: '1.5万' },
+      { title: '美丽乡村', poster: 'https://picsum.photos/id/1036/400/225', duration: '04:22', views: '1万', url: 'https://www.bilibili.com/video/BV1UZXWBLEix/' },
+      { title: '美丽蓝天', poster: 'https://picsum.photos/id/1019/400/225', duration: '00:15', views: '10万', url: 'https://www.bilibili.com/video/BV1UZXWBLEMR/' },
+      { title: '生物多样性保护', poster: 'https://picsum.photos/id/15/400/225', duration: '03:43', views: '3万', url: 'https://www.bilibili.com/video/BV1uZXWBjEKe/' },
+      { title: '绿色低碳生活', poster: 'https://picsum.photos/id/119/400/225', duration: '03:22', views: '0', url: 'https://www.bilibili.com/video/BV1MZXWBjEj5/' },
+      { title: '美丽河湖', poster: 'https://picsum.photos/id/10/400/225', duration: '03:03', views: '1万', url: 'https://www.bilibili.com/video/BV1SdXWB2EJT/' },
     ];
 
     const grid = document.getElementById('video-grid');
     grid.innerHTML = videoList.map(item => `
-      <div class="video-card">
+      <div class="video-card" onclick="window.open('${item.url}', '_blank')">
         <div class="video-thumbnail">
           <img src="${item.poster}" class="video-player" alt="${item.title}">
           <div class="play-overlay">
